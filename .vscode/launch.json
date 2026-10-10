@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "🚀 Run Full-Stack (Backend + Frontend)",
+      "configurations": [
+        "🟦 Backend Server (Node.js)",
+        "🌐 Frontend Web App (Browser)"
+      ],
+      "stopAll": true
+    }
+  ],
+  "configurations": [
+    {
+      "name": "🟦 Backend Server (Node.js)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/server/server.js",
+      "cwd": "${workspaceFolder}/server",
+      "restart": true,
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/server/.env"
+    },
+    {
+      "name": "🌐 Frontend Web App (Browser)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "🟩 Start Frontend Web (Port 5173)"
+    }
+  ]
+}

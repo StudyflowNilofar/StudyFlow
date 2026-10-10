@@ -1,0 +1,60 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Start Full-Stack (StudyFlow App + Backend)",
+      "type": "shell",
+      "command": "npm start",
+      "isBackground": true,
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "STARTING STUDYFLOW|BACKEND|FRONTEND|VITE",
+          "endsPattern": "ready in|running on port"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false,
+        "clear": false
+      }
+    },
+    {
+      "label": "🟦 Start Backend API (Port 5000)",
+      "type": "shell",
+      "command": "npm run server",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "🟩 Start Frontend Web (Port 5173)",
+      "type": "shell",
+      "command": "npm run dev",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "📦 Install All Project Dependencies",
+      "type": "shell",
+      "command": "npm install; cd server; npm install; cd ..",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    }
+  ]
+}
