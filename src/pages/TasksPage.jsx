@@ -386,7 +386,7 @@ function TasksPage({ onNavigate }) {
                     key={task.id}
                     task={task}
                     onToggleComplete={handleToggleComplete}
-                    onDeleteTask={handleDeleteTask}
+                    onDelete={handleDeleteTask}
                   />
                 ))}
               </div>

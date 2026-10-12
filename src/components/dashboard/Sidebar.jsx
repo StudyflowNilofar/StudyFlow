@@ -13,6 +13,7 @@ import {
   LogOut,
   X
 } from 'lucide-react'
+import { useAuth } from '../../context/AuthContext'
 
 function Sidebar({
   activeTab = 'dashboard',
@@ -21,6 +22,20 @@ function Sidebar({
   isMobileOpen = false,
   onCloseMobile
 }) {
+  const { logout, user } = useAuth()
+
+  const displayName = user?.name || 'Alex Sharma'
+  const initials = displayName
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || 'AS'
+  const displaySub = user?.semester
+    ? `${user.semester} • ${user.institution || 'Student'}`
+    : 'TYCS • Semester 6'
+
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'subjects', label: 'Subjects', icon: Layers },
@@ -54,6 +69,7 @@ function Sidebar({
   }
 
   const handleLogout = () => {
+    logout()
     if (onNavigate) {
       onNavigate('landing')
     }
@@ -121,10 +137,10 @@ function Sidebar({
         {/* Sidebar Footer: Student Profile & Logout */}
         <div className="sidebar-footer">
           <div className="student-profile-badge">
-            <div className="profile-avatar">AS</div>
+            <div className="profile-avatar">{initials}</div>
             <div className="profile-info">
-              <div className="profile-name">Alex Sharma</div>
-              <div className="profile-sub">TYCS • Semester 6</div>
+              <div className="profile-name">{displayName}</div>
+              <div className="profile-sub">{displaySub}</div>
             </div>
           </div>
 

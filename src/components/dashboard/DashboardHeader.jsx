@@ -4,6 +4,14 @@ import { Menu, Calendar, Bell, Sparkles } from 'lucide-react'
 function DashboardHeader({ onOpenMobileSidebar, studentName = 'Alex Sharma' }) {
   const todayDateFormatted = 'Sunday, Aug 16, 2026'
 
+  const initials = studentName
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || 'AS'
+
   return (
     <header className="dashboard-top-header">
       <div className="header-left">
@@ -46,7 +54,7 @@ function DashboardHeader({ onOpenMobileSidebar, studentName = 'Alex Sharma' }) {
 
         {/* Header Profile Badge */}
         <div className="header-user-badge">
-          <div className="header-avatar">AS</div>
+          <div className="header-avatar">{initials}</div>
           <span className="header-username">{studentName}</span>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AuthProvider } from './context/AuthContext'
+import { AuthProvider, useAuth } from './context/AuthContext'
 import LandingPage from './pages/LandingPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
@@ -10,7 +10,11 @@ import TasksPage from './pages/TasksPage'
 import NotesPage from './pages/NotesPage'
 import './App.css'
 
+const PRIVATE_PAGES = ['dashboard', 'subjects', 'planner', 'tasks', 'notes']
+
 function AppContent() {
+  const { isAuthenticated, loading } = useAuth()
+
   const getInitialPage = () => {
     const hash = window.location.hash.toLowerCase()
     if (hash === '#register') return 'register'
@@ -73,12 +77,34 @@ function AppContent() {
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
+  // Guard: Redirect to login if user attempts to access private pages without authentication
+  useEffect(() => {
+    if (!loading && !isAuthenticated && PRIVATE_PAGES.includes(currentPage)) {
+      handleNavigate('login')
+    }
+  }, [loading, isAuthenticated, currentPage])
+
+  // Public Routes
   if (currentPage === 'register') {
     return <RegisterPage onNavigate={handleNavigate} />
   }
 
   if (currentPage === 'login') {
     return <LoginPage onNavigate={handleNavigate} />
+  }
+
+  // Private Route Auth Guard Check
+  if (PRIVATE_PAGES.includes(currentPage)) {
+    if (loading) {
+      return (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', background: '#090d16', color: '#94a3b8' }}>
+          <p>Verifying StudyFlow session...</p>
+        </div>
+      )
+    }
+    if (!isAuthenticated) {
+      return <LoginPage onNavigate={handleNavigate} />
+    }
   }
 
   if (currentPage === 'dashboard') {
