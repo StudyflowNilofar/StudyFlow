@@ -11,19 +11,27 @@ import {
 
 function StudySessionBanner({
   topics,
+  topicsList,
   selectedTopic,
+  activeTopic,
   onSelectTopic,
   isSessionCompleted,
+  isCompleted,
   onToggleComplete
 }) {
+  const currentTopic = selectedTopic || activeTopic || {}
+  const allTopics = topics || topicsList || []
+  const sessionCompleted = isSessionCompleted !== undefined ? isSessionCompleted : Boolean(isCompleted)
+  const objectives = currentTopic.objectives || []
+
   return (
     <div className="planner-session-banner-card">
       <div className="banner-top-row">
         {/* Left: Academic Topic Selector */}
         <div className="banner-topic-section">
           <div className="banner-badge-row">
-            <span className="banner-subject-tag">{selectedTopic.code} • {selectedTopic.subject}</span>
-            <span className="banner-semester-tag">{selectedTopic.semester}</span>
+            <span className="banner-subject-tag">{currentTopic.code || ''} • {currentTopic.subject || ''}</span>
+            <span className="banner-semester-tag">{currentTopic.semester || ''}</span>
           </div>
 
           <div className="topic-selector-wrapper">
@@ -34,10 +42,10 @@ function StudySessionBanner({
               <select
                 id="planner-topic-select"
                 className="planner-topic-select"
-                value={selectedTopic.id}
-                onChange={(e) => onSelectTopic(e.target.value)}
+                value={currentTopic.id || ''}
+                onChange={(e) => onSelectTopic && onSelectTopic(e.target.value)}
               >
-                {topics.map((t) => (
+                {allTopics.map((t) => (
                   <option key={t.id} value={t.id}>
                     {t.title}
                   </option>
@@ -53,27 +61,27 @@ function StudySessionBanner({
           <div className="banner-pills-row">
             <div className="banner-meta-pill">
               <Clock size={14} className="meta-icon" />
-              <span><strong>{selectedTopic.durationMinutes}</strong> mins goal</span>
+              <span><strong>{currentTopic.durationMinutes || 45}</strong> mins goal</span>
             </div>
 
             <div className="banner-meta-pill">
               <Award size={14} className="meta-icon" />
-              <span><strong>{selectedTopic.targetMarks}</strong> weightage</span>
+              <span><strong>{currentTopic.targetMarks || '10 Marks'}</strong> weightage</span>
             </div>
 
             <div className="banner-meta-pill">
               <Calendar size={14} className="meta-icon" />
-              <span>{selectedTopic.date}</span>
+              <span>{currentTopic.date || 'Today'}</span>
             </div>
           </div>
 
           <button
             type="button"
-            className={`session-status-toggle-btn ${isSessionCompleted ? 'completed' : 'in-progress'}`}
+            className={`session-status-toggle-btn ${sessionCompleted ? 'completed' : 'in-progress'}`}
             onClick={onToggleComplete}
             title="Click to toggle session completion status"
           >
-            {isSessionCompleted ? (
+            {sessionCompleted ? (
               <>
                 <CheckCircle2 size={16} />
                 <span>Session Completed (100%)</span>
@@ -95,7 +103,7 @@ function StudySessionBanner({
           <span>Core Syllabus Learning Goals for this Session:</span>
         </div>
         <ul className="objectives-list">
-          {selectedTopic.objectives.map((obj, idx) => (
+          {objectives.map((obj, idx) => (
             <li key={idx} className="objective-item">
               <span className="objective-bullet">✓</span>
               <span>{obj}</span>

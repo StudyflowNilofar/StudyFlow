@@ -160,10 +160,13 @@ function PlannerPage({ onNavigate }) {
 
           {/* 2. Active Session Card Banner with Topic Selector */}
           <StudySessionBanner
-            activeTopic={activeTopic}
+            topics={mockPlannerTopics}
             topicsList={mockPlannerTopics}
+            selectedTopic={activeTopic}
+            activeTopic={activeTopic}
             selectedTopicId={selectedTopicId}
             onSelectTopic={handleSelectTopic}
+            isSessionCompleted={isSessionCompleted}
             isCompleted={isSessionCompleted}
             onToggleComplete={handleToggleSessionComplete}
           />
@@ -196,7 +199,7 @@ function PlannerPage({ onNavigate }) {
             )}
 
             {activeStudyTab === 'exam' && (
-              <ExamAnswerView topicData={activeTopic} />
+              <ExamAnswerView topicData={activeTopic} onCopyNotice={triggerNotice} />
             )}
 
             {activeStudyTab === 'flashcards' && (

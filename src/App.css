@@ -2628,6 +2628,10 @@
   animation: modalSlideUp 0.2s ease-out;
 }
 
+.modal-container.subject-detail-modal {
+  max-width: 620px;
+}
+
 @keyframes modalSlideUp {
   from {
     opacity: 0;

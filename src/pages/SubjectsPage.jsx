@@ -16,6 +16,7 @@ import Sidebar from '../components/dashboard/Sidebar'
 import DashboardHeader from '../components/dashboard/DashboardHeader'
 import SubjectDetailCard from '../components/subjects/SubjectDetailCard'
 import AddSubjectModal from '../components/subjects/AddSubjectModal'
+import SubjectDetailModal from '../components/subjects/SubjectDetailModal'
 
 import { useAuth } from '../context/AuthContext'
 import { subjectApi } from '../services/api'
@@ -29,6 +30,7 @@ function SubjectsPage({ onNavigate }) {
   const [subjects, setSubjects] = useState(initialMockSubjects)
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [selectedSubject, setSelectedSubject] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('All')
   const [noticeMessage, setNoticeMessage] = useState('')
@@ -103,7 +105,7 @@ function SubjectsPage({ onNavigate }) {
 
   // Handle viewing subject details
   const handleViewDetails = (subject) => {
-    triggerNotice(`Opening syllabus & topic breakdown for ${subject.code}: ${subject.title}`)
+    setSelectedSubject(subject)
   }
 
   // Calculated Metrics
@@ -373,6 +375,13 @@ function SubjectsPage({ onNavigate }) {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onAddSubject={handleAddSubject}
+      />
+
+      {/* Subject Detail Modal Dialog */}
+      <SubjectDetailModal
+        subject={selectedSubject}
+        isOpen={Boolean(selectedSubject)}
+        onClose={() => setSelectedSubject(null)}
       />
     </div>
   )
