@@ -40,7 +40,7 @@ function SubjectsPage({ onNavigate }) {
   const fetchSubjects = async () => {
     try {
       const res = await subjectApi.getAll()
-      if (res?.success && res.data && res.data.length > 0) {
+      if (res?.success && Array.isArray(res.data)) {
         const normalized = res.data.map((s) => ({
           ...s,
           id: s._id || s.id,

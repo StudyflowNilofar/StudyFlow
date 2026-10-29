@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import mongoose from 'mongoose'
 import { connectDB } from './config/db.js'
 
 import authRoutes from './routes/authRoutes.js'
@@ -11,11 +12,14 @@ import plannerRoutes from './routes/plannerRoutes.js'
 import dashboardRoutes from './routes/dashboardRoutes.js'
 
 dotenv.config()
+if (!process.env.MONGO_URI) {
+  dotenv.config({ path: 'server/.env' })
+}
 
 const app = express()
 const PORT = process.env.PORT || 5000
 
-// Connect to Database
+// Initial Database Connection (attempt in background)
 connectDB()
 
 // Middleware
@@ -30,8 +34,20 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+// Ensure database connection is active on serverless invocations
+app.use(async (_req, _res, next) => {
+  try {
+    if (mongoose.connection.readyState < 1) {
+      await connectDB()
+    }
+  } catch (err) {
+    console.warn('DB reconnection attempt warning:', err.message)
+  }
+  next()
+})
+
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get(['/', '/api', '/api/health', '/health'], (req, res) => {
   res.json({
     status: 'OK',
     app: 'StudyFlow API Server',
@@ -40,13 +56,13 @@ app.get('/api/health', (req, res) => {
   })
 })
 
-// Mount API Routes
-app.use('/api/auth', authRoutes)
-app.use('/api/subjects', subjectRoutes)
-app.use('/api/tasks', taskRoutes)
-app.use('/api/notes', noteRoutes)
-app.use('/api/planner', plannerRoutes)
-app.use('/api/dashboard', dashboardRoutes)
+// Mount API Routes (support both /api/* and root /* for seamless Vercel rewrites)
+app.use(['/api/auth', '/auth'], authRoutes)
+app.use(['/api/subjects', '/subjects'], subjectRoutes)
+app.use(['/api/tasks', '/tasks'], taskRoutes)
+app.use(['/api/notes', '/notes'], noteRoutes)
+app.use(['/api/planner', '/planner'], plannerRoutes)
+app.use(['/api/dashboard', '/dashboard'], dashboardRoutes)
 
 // 404 Handler
 app.use((req, res) => {
@@ -65,9 +81,11 @@ app.use((err, req, res, _next) => {
   })
 })
 
-// Start listening
-app.listen(PORT, () => {
-  console.log(`🚀 StudyFlow API Server running on port ${PORT} (http://localhost:${PORT})`)
-})
+// Start listening only in standalone server mode (skip in Vercel serverless)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 StudyFlow API Server running on port ${PORT} (http://localhost:${PORT})`)
+  })
+}
 
 export default app

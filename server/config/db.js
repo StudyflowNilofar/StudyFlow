@@ -1,11 +1,15 @@
 import mongoose from 'mongoose'
 
 export const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return true
+  }
+
   const uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/studyflow'
   
   try {
     const conn = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 3000,
+      serverSelectionTimeoutMS: 5000,
     })
     console.log(` MongoDB Connected: ${conn.connection.host}`)
     return true

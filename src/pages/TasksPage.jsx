@@ -38,7 +38,7 @@ function TasksPage({ onNavigate }) {
   const fetchTasksData = async () => {
     try {
       const res = await taskApi.getAll()
-      if (res?.success && res.data && res.data.length > 0) {
+      if (res?.success && Array.isArray(res.data)) {
         const normalized = res.data.map((t) => ({
           ...t,
           id: t._id || t.id,
@@ -51,7 +51,7 @@ function TasksPage({ onNavigate }) {
 
     try {
       const subjRes = await subjectApi.getAll()
-      if (subjRes?.success && subjRes.data && subjRes.data.length > 0) {
+      if (subjRes?.success && Array.isArray(subjRes.data) && subjRes.data.length > 0) {
         setSubjectsList(subjRes.data.map((s) => s.title))
       }
     } catch (err) {
