@@ -5,7 +5,7 @@ export const connectDB = async () => {
     return true
   }
 
-  const uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/studyflow'
+  const uri = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/studyflow'
   
   try {
     const conn = await mongoose.connect(uri, {
