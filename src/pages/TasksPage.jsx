@@ -184,18 +184,8 @@ function TasksPage({ onNavigate }) {
       <Sidebar
         activeTab="tasks"
         onTabChange={(tab) => {
-          if (tab === 'dashboard') {
-            onNavigate('dashboard')
-          } else if (tab === 'subjects') {
-            onNavigate('subjects')
-          } else if (tab === 'planner') {
-            onNavigate('planner')
-          } else if (tab === 'tasks') {
-            // Already on tasks
-          } else if (tab === 'notes') {
-            onNavigate('notes')
-          } else {
-            triggerNotice(`Switched to ${tab.charAt(0).toUpperCase() + tab.slice(1)} view`)
+          if (tab !== 'tasks' && onNavigate) {
+            onNavigate(tab)
           }
         }}
         onNavigate={onNavigate}

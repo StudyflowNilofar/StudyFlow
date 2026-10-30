@@ -8,9 +8,23 @@ import SubjectsPage from './pages/SubjectsPage'
 import PlannerPage from './pages/PlannerPage'
 import TasksPage from './pages/TasksPage'
 import NotesPage from './pages/NotesPage'
+import SyllabusPage from './pages/SyllabusPage'
+import ResourcesPage from './pages/ResourcesPage'
+import AnalyticsPage from './pages/AnalyticsPage'
+import SettingsPage from './pages/SettingsPage'
 import './App.css'
 
-const PRIVATE_PAGES = ['dashboard', 'subjects', 'planner', 'tasks', 'notes']
+const PRIVATE_PAGES = [
+  'dashboard',
+  'subjects',
+  'planner',
+  'tasks',
+  'notes',
+  'syllabus',
+  'resources',
+  'analytics',
+  'settings'
+]
 
 function AppContent() {
   const { isAuthenticated, loading } = useAuth()
@@ -24,6 +38,10 @@ function AppContent() {
     if (hash === '#planner') return 'planner'
     if (hash === '#tasks') return 'tasks'
     if (hash === '#notes') return 'notes'
+    if (hash === '#syllabus') return 'syllabus'
+    if (hash === '#resources') return 'resources'
+    if (hash === '#analytics') return 'analytics'
+    if (hash === '#settings') return 'settings'
     return 'landing'
   }
 
@@ -31,22 +49,24 @@ function AppContent() {
 
   const handleNavigate = (page) => {
     setCurrentPage(page)
+    const validHashes = [
+      'register',
+      'login',
+      'dashboard',
+      'subjects',
+      'planner',
+      'tasks',
+      'notes',
+      'syllabus',
+      'resources',
+      'analytics',
+      'settings'
+    ]
+
     if (page === 'landing') {
       window.location.hash = '#home'
-    } else if (page === 'register') {
-      window.location.hash = '#register'
-    } else if (page === 'login') {
-      window.location.hash = '#login'
-    } else if (page === 'dashboard') {
-      window.location.hash = '#dashboard'
-    } else if (page === 'subjects') {
-      window.location.hash = '#subjects'
-    } else if (page === 'planner') {
-      window.location.hash = '#planner'
-    } else if (page === 'tasks') {
-      window.location.hash = '#tasks'
-    } else if (page === 'notes') {
-      window.location.hash = '#notes'
+    } else if (validHashes.includes(page)) {
+      window.location.hash = `#${page}`
     }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -54,20 +74,23 @@ function AppContent() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.toLowerCase()
-      if (hash === '#register') {
-        setCurrentPage('register')
-      } else if (hash === '#login') {
-        setCurrentPage('login')
-      } else if (hash === '#dashboard') {
-        setCurrentPage('dashboard')
-      } else if (hash === '#subjects') {
-        setCurrentPage('subjects')
-      } else if (hash === '#planner') {
-        setCurrentPage('planner')
-      } else if (hash === '#tasks') {
-        setCurrentPage('tasks')
-      } else if (hash === '#notes') {
-        setCurrentPage('notes')
+      const cleanHash = hash.replace(/^#/, '')
+      const validPages = [
+        'register',
+        'login',
+        'dashboard',
+        'subjects',
+        'planner',
+        'tasks',
+        'notes',
+        'syllabus',
+        'resources',
+        'analytics',
+        'settings'
+      ]
+
+      if (validPages.includes(cleanHash)) {
+        setCurrentPage(cleanHash)
       } else if (hash === '#home' || hash === '#features' || hash === '') {
         setCurrentPage('landing')
       }
@@ -125,6 +148,22 @@ function AppContent() {
 
   if (currentPage === 'notes') {
     return <NotesPage onNavigate={handleNavigate} />
+  }
+
+  if (currentPage === 'syllabus') {
+    return <SyllabusPage onNavigate={handleNavigate} />
+  }
+
+  if (currentPage === 'resources') {
+    return <ResourcesPage onNavigate={handleNavigate} />
+  }
+
+  if (currentPage === 'analytics') {
+    return <AnalyticsPage onNavigate={handleNavigate} />
+  }
+
+  if (currentPage === 'settings') {
+    return <SettingsPage onNavigate={handleNavigate} />
   }
 
   return <LandingPage onNavigate={handleNavigate} />

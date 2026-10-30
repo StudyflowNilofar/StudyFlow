@@ -158,3 +158,19 @@ export const plannerApi = {
 export const dashboardApi = {
   getStats: () => request('/dashboard/stats'),
 }
+
+// 7. Academic Resources API
+export const resourceApi = {
+  getAll: () => request('/resources'),
+
+  create: (resourceData) =>
+    request('/resources', {
+      method: 'POST',
+      body: JSON.stringify(resourceData),
+    }),
+
+  delete: (id) =>
+    request(`/resources/${id}`, {
+      method: 'DELETE',
+    }),
+}

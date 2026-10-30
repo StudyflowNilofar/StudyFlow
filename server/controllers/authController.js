@@ -3,6 +3,7 @@ import User from '../models/User.js'
 import Subject from '../models/Subject.js'
 import Task from '../models/Task.js'
 import Note from '../models/Note.js'
+import Resource from '../models/Resource.js'
 
 // Helper: Generate JWT Token
 const generateToken = (id, name, email) => {
@@ -134,6 +135,34 @@ export const seedDefaultUserData = async (userId) => {
         tags: ['IKS', 'Geometry', 'AncientTech'],
         color: '#10b981',
         updatedAtText: 'Yesterday'
+      }
+    ])
+
+    // Create starter resources
+    await Resource.insertMany([
+      {
+        user: userId,
+        title: 'IEEE 829 Standard Test Documentation Guide',
+        subject: 'Software Testing & QA',
+        type: 'Document',
+        url: 'https://en.wikipedia.org/wiki/IEEE_829',
+        description: 'Comprehensive guidelines on test plans, test design specifications, test case specs, and test logs.'
+      },
+      {
+        user: userId,
+        title: 'Baudhayana Sulba Sutras Geometric Proofs PDF',
+        subject: 'Indian Knowledge Systems',
+        type: 'Document',
+        url: 'https://archive.org/details/Sulbasutras',
+        description: 'Primary text translations and geometric diagrams for ancient Vedic altar measurements.'
+      },
+      {
+        user: userId,
+        title: 'AI Search Algorithms & Heuristics Visualizer',
+        subject: 'Artificial Intelligence',
+        type: 'Website',
+        url: 'https://qiao.github.io/PathFinding.js/visual/',
+        description: 'Interactive visualization for A*, Dijkstra, Breadth-First, and Best-First search algorithms.'
       }
     ])
   } catch (err) {

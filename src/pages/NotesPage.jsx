@@ -190,18 +190,8 @@ function NotesPage({ onNavigate }) {
       <Sidebar
         activeTab="notes"
         onTabChange={(tab) => {
-          if (tab === 'dashboard') {
-            onNavigate('dashboard')
-          } else if (tab === 'subjects') {
-            onNavigate('subjects')
-          } else if (tab === 'planner') {
-            onNavigate('planner')
-          } else if (tab === 'tasks') {
-            onNavigate('tasks')
-          } else if (tab === 'notes') {
-            // Already on notes
-          } else {
-            triggerNotice(`Switched to ${tab.charAt(0).toUpperCase() + tab.slice(1)} view`)
+          if (tab !== 'notes' && onNavigate) {
+            onNavigate(tab)
           }
         }}
         onNavigate={onNavigate}

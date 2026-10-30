@@ -49,16 +49,8 @@ function Sidebar({
   ]
 
   const handleItemClick = (id) => {
-    if (id === 'dashboard' && onNavigate) {
-      onNavigate('dashboard')
-    } else if (id === 'subjects' && onNavigate) {
-      onNavigate('subjects')
-    } else if (id === 'planner' && onNavigate) {
-      onNavigate('planner')
-    } else if (id === 'tasks' && onNavigate) {
-      onNavigate('tasks')
-    } else if (id === 'notes' && onNavigate) {
-      onNavigate('notes')
+    if (onNavigate) {
+      onNavigate(id)
     }
     if (onTabChange) {
       onTabChange(id)

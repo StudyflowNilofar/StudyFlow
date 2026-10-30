@@ -10,6 +10,7 @@ import taskRoutes from './routes/taskRoutes.js'
 import noteRoutes from './routes/noteRoutes.js'
 import plannerRoutes from './routes/plannerRoutes.js'
 import dashboardRoutes from './routes/dashboardRoutes.js'
+import resourceRoutes from './routes/resourceRoutes.js'
 
 dotenv.config()
 if (!process.env.MONGO_URI && !process.env.MONGODB_URI) {
@@ -63,6 +64,7 @@ app.use(['/api/tasks', '/tasks'], taskRoutes)
 app.use(['/api/notes', '/notes'], noteRoutes)
 app.use(['/api/planner', '/planner'], plannerRoutes)
 app.use(['/api/dashboard', '/dashboard'], dashboardRoutes)
+app.use(['/api/resources', '/resources'], resourceRoutes)
 
 // 404 Handler
 app.use((req, res) => {

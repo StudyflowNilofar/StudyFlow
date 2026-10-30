@@ -75,17 +75,25 @@ export const updateSubject = async (req, res) => {
       hoursSpent,
       status,
       description,
+      topics,
     } = req.body
 
     if (title) subject.title = title
     if (code) subject.code = code.toUpperCase()
     if (teacher !== undefined) subject.teacher = teacher
     if (color) subject.color = color
-    if (totalTopics !== undefined) subject.totalTopics = Number(totalTopics)
-    if (topicsCovered !== undefined) subject.topicsCovered = Number(topicsCovered)
     if (hoursSpent !== undefined) subject.hoursSpent = Number(hoursSpent)
     if (status) subject.status = status
     if (description !== undefined) subject.description = description
+
+    if (topics !== undefined && Array.isArray(topics)) {
+      subject.topics = topics
+      subject.totalTopics = topics.length
+      subject.topicsCovered = topics.filter((t) => t.completed).length
+    } else {
+      if (totalTopics !== undefined) subject.totalTopics = Number(totalTopics)
+      if (topicsCovered !== undefined) subject.topicsCovered = Number(topicsCovered)
+    }
 
     // Recalculate progress %
     if (subject.totalTopics > 0) {

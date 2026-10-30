@@ -30,7 +30,6 @@ import {
 
 function DashboardPage({ onNavigate }) {
   const { user } = useAuth()
-  const [activeTab, setActiveTab] = useState('dashboard')
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const [tasks, setTasks] = useState(mockTodayTasks)
   const [subjects, setSubjects] = useState(mockSubjects)
@@ -109,19 +108,10 @@ function DashboardPage({ onNavigate }) {
     <div className="dashboard-app-layout">
       {/* Sidebar Navigation */}
       <Sidebar
-        activeTab={activeTab}
+        activeTab="dashboard"
         onTabChange={(tab) => {
-          setActiveTab(tab)
-          if (tab === 'subjects' && onNavigate) {
-            onNavigate('subjects')
-          } else if (tab === 'planner' && onNavigate) {
-            onNavigate('planner')
-          } else if (tab === 'tasks' && onNavigate) {
-            onNavigate('tasks')
-          } else if (tab === 'notes' && onNavigate) {
-            onNavigate('notes')
-          } else if (tab !== 'dashboard') {
-            handleQuickAction(`Switched to ${tab.charAt(0).toUpperCase() + tab.slice(1)} view`)
+          if (tab !== 'dashboard' && onNavigate) {
+            onNavigate(tab)
           }
         }}
         onNavigate={onNavigate}

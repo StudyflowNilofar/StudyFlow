@@ -54,6 +54,14 @@ const subjectSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    topics: [
+      {
+        id: { type: String, required: true },
+        title: { type: String, required: true },
+        completed: { type: Boolean, default: false },
+        unit: { type: String, default: 'Unit 1' },
+      },
+    ],
   },
   { timestamps: true }
 )
